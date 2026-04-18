@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { computed } from 'vue'
+import { computed, onMounted, onUnmounted } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
 import { images } from '../images'
 
@@ -7,6 +7,13 @@ const route = useRoute()
 const router = useRouter()
 
 const photo = computed(() => images.find(img => img.id === Number(route.params.id)))
+
+function onKeydown(e: KeyboardEvent) {
+  if (e.key === 'Escape') router.push('/')
+}
+
+onMounted(() => document.addEventListener('keydown', onKeydown))
+onUnmounted(() => document.removeEventListener('keydown', onKeydown))
 </script>
 
 <template>
