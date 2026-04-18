@@ -4,7 +4,7 @@ export interface GalleryImage {
   alt: string
 }
 
-const modules = import.meta.glob('./assets/*.{jpg,jpeg,png,webp}', {
+const modules = import.meta.glob('./assets/*.{jpg,jpeg,png,webp,JPG,JPEG,PNG,WEBP}', {
   eager: true,
   query: '?url',
   import: 'default',

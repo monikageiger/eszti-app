@@ -52,9 +52,10 @@ const photo = computed(() => images.find(img => img.id === Number(route.params.i
   position: relative;
 
   img {
-    width: 100%;
-    height: auto;
     display: block;
+    width: 100%;
+    max-height: calc(100svh - 56px - 50px - 48px);
+    object-fit: contain;
     border-radius: 8px;
   }
 }

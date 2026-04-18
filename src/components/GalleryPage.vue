@@ -41,17 +41,18 @@ import { images } from '../images'
 }
 
 .masonry-item {
-  display: block;
+  display: flex;
+  justify-content: center;
   position: relative;
   break-inside: avoid;
   margin-bottom: 20px;
   overflow: hidden;
-  background: var(--bg-secondary);
   cursor: pointer;
 
   img {
-    width: 100%;
-    height: auto;
+    width: auto;
+    max-width: 100%;
+    max-height: calc(85svh - 56px);
     display: block;
   }
 }
