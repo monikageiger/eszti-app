@@ -37,7 +37,8 @@ import { images } from '../images'
   columns: 1;
   column-gap: 20px;
 
-  @include sm { columns: 2; }
+  @include md { columns: 2; }
+  @include lg { columns: 3; }
 }
 
 .masonry-item {
