@@ -4,7 +4,7 @@ import PhotoPage from './components/PhotoPage.vue'
 import ContactPage from './components/ContactPage.vue'
 
 export default createRouter({
-  history: createWebHistory(),
+  history: createWebHistory('/eszti-app/'),
   routes: [
     { path: '/', component: GalleryPage },
     { path: '/image/:id', component: PhotoPage },
