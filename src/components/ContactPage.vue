@@ -27,75 +27,38 @@ function submitForm() {
 </script>
 
 <template>
-  <div class="page">
-    <header class="header">
-      <div class="header-inner">
-        <RouterLink to="/" class="back-btn">
-          <FaIcon icon="chevron-left" />
-          Back
-        </RouterLink>
-        <span class="page-title">Contact</span>
-      </div>
-    </header>
+  <main class="main">
+    <div v-if="submitted" class="success">
+      <FaIcon icon="circle-check" />
+      <h3>Message sent!</h3>
+      <p>Thank you for reaching out. I'll get back to you soon.</p>
+      <button class="reset-btn" @click="submitted = false">Send another message</button>
+    </div>
 
-    <main class="main">
-      <div v-if="submitted" class="success">
-        <FaIcon icon="circle-check" />
-        <h3>Message sent!</h3>
-        <p>Thank you for reaching out. I'll get back to you soon.</p>
-        <button class="reset-btn" @click="submitted = false">Send another message</button>
+    <form v-else class="form" @submit.prevent="submitForm" novalidate>
+      <h2>Get in Touch</h2>
+      <div class="field">
+        <label for="name">Name</label>
+        <input id="name" v-model="form.name" type="text" placeholder="Your name" :class="{ 'input-error': errors.name }" />
+        <span v-if="errors.name" class="error">{{ errors.name }}</span>
       </div>
-
-      <form v-else class="form" @submit.prevent="submitForm" novalidate>
-        <h2>Get in Touch</h2>
-        <div class="field">
-          <label for="name">Name</label>
-          <input id="name" v-model="form.name" type="text" placeholder="Your name" :class="{ 'input-error': errors.name }" />
-          <span v-if="errors.name" class="error">{{ errors.name }}</span>
-        </div>
-        <div class="field">
-          <label for="email">Email</label>
-          <input id="email" v-model="form.email" type="email" placeholder="you@example.com" :class="{ 'input-error': errors.email }" />
-          <span v-if="errors.email" class="error">{{ errors.email }}</span>
-        </div>
-        <div class="field">
-          <label for="message">Message</label>
-          <textarea id="message" v-model="form.message" rows="6" placeholder="What's on your mind?" :class="{ 'input-error': errors.message }"></textarea>
-          <span v-if="errors.message" class="error">{{ errors.message }}</span>
-        </div>
-        <button type="submit" class="submit-btn">Send Message</button>
-      </form>
-    </main>
-  </div>
+      <div class="field">
+        <label for="email">Email</label>
+        <input id="email" v-model="form.email" type="email" placeholder="you@example.com" :class="{ 'input-error': errors.email }" />
+        <span v-if="errors.email" class="error">{{ errors.email }}</span>
+      </div>
+      <div class="field">
+        <label for="message">Message</label>
+        <textarea id="message" v-model="form.message" rows="6" placeholder="What's on your mind?" :class="{ 'input-error': errors.message }"></textarea>
+        <span v-if="errors.message" class="error">{{ errors.message }}</span>
+      </div>
+      <button type="submit" class="submit-btn">Send Message</button>
+    </form>
+  </main>
 </template>
 
 <style scoped lang="scss">
 @use '../styles/mixins' as *;
-
-.page {
-  min-height: 100svh;
-  display: flex;
-  flex-direction: column;
-  background: var(--bg);
-}
-
-.header {
-  @include sticky-header;
-}
-
-.header-inner {
-  @include header-inner;
-}
-
-.back-btn {
-  @include back-btn;
-}
-
-.page-title {
-  font-size: 15px;
-  font-weight: 600;
-  color: var(--text);
-}
 
 .main {
   flex: 1;
