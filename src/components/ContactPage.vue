@@ -1,8 +1,12 @@
 <script setup lang="ts">
 import { ref } from 'vue'
 
-const form = ref({ name: '', email: '', message: '' })
+const FORMSPREE_URL = 'https://formspree.io/f/xzdyjold'
+
+const form = ref({ name: '', email: '', message: '', _gotcha: '' })
 const submitted = ref(false)
+const submitting = ref(false)
+const submitError = ref('')
 const errors = ref<Record<string, string>>({})
 
 function validate(): boolean {
@@ -17,11 +21,24 @@ function validate(): boolean {
   return Object.keys(errors.value).length === 0
 }
 
-function submitForm() {
-  if (validate()) {
+async function submitForm() {
+  if (!validate()) return
+  submitting.value = true
+  submitError.value = ''
+  try {
+    const res = await fetch(FORMSPREE_URL, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json', Accept: 'application/json' },
+      body: JSON.stringify(form.value),
+    })
+    if (!res.ok) throw new Error('Submission failed')
     submitted.value = true
-    form.value = { name: '', email: '', message: '' }
+    form.value = { name: '', email: '', message: '', _gotcha: '' }
     errors.value = {}
+  } catch {
+    submitError.value = 'Something went wrong. Please try again.'
+  } finally {
+    submitting.value = false
   }
 }
 </script>
@@ -37,6 +54,7 @@ function submitForm() {
 
     <form v-else class="form" @submit.prevent="submitForm" novalidate>
       <h2>Get in Touch</h2>
+      <input type="text" name="_gotcha" v-model="form._gotcha" class="honeypot" tabindex="-1" autocomplete="off" aria-hidden="true" />
       <div class="field">
         <label for="name">Name</label>
         <input id="name" v-model="form.name" type="text" placeholder="Your name" :class="{ 'input-error': errors.name }" />
@@ -52,7 +70,10 @@ function submitForm() {
         <textarea id="message" v-model="form.message" rows="6" placeholder="What's on your mind?" :class="{ 'input-error': errors.message }"></textarea>
         <span v-if="errors.message" class="error">{{ errors.message }}</span>
       </div>
-      <button type="submit" class="submit-btn">Send Message</button>
+      <button type="submit" class="submit-btn" :disabled="submitting">
+        {{ submitting ? 'Sending…' : 'Send Message' }}
+      </button>
+      <span v-if="submitError" class="error">{{ submitError }}</span>
     </form>
   </main>
 </template>
@@ -108,6 +129,14 @@ function submitForm() {
   color: #ef4444;
 }
 
+.honeypot {
+  position: absolute;
+  left: -9999px;
+  width: 1px;
+  height: 1px;
+  opacity: 0;
+}
+
 .submit-btn {
   padding: 11px 24px;
   background: var(--accent);
@@ -121,8 +150,9 @@ function submitForm() {
   font-family: inherit;
   transition: background 0.15s, transform 0.1s;
 
-  &:hover { background: var(--accent-hover); }
-  &:active { transform: scale(0.98); }
+  &:hover:not(:disabled) { background: var(--accent-hover); }
+  &:active:not(:disabled) { transform: scale(0.98); }
+  &:disabled { opacity: 0.6; cursor: not-allowed; }
 }
 
 .success {
