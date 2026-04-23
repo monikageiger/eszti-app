@@ -45,6 +45,7 @@
 html {
   scroll-behavior: smooth;
   background: var(--bg);
+  overflow-x: clip;
 }
 
 body {
@@ -58,7 +59,8 @@ body {
   text-rendering: optimizeLegibility;
   font-feature-settings: 'ss01', 'cv11';
   transition: background 0.4s ease, color 0.4s ease;
-  overflow-x: hidden;
+  overflow-x: clip;
+  min-height: 100svh;
 }
 
 // Film grain overlay — the signature texture of the whole app

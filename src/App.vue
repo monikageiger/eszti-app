@@ -22,8 +22,11 @@ function setTheme(dark: boolean) {
         <RouterLink to="/" class="logo">Eszter Bodnar</RouterLink>
         <nav class="nav">
 
-          <RouterLink to="/contact" class="nav-link">Contact</RouterLink>
-            <a
+          <RouterLink to="/contact" class="nav-link" aria-label="Contact">
+            <span class="nav-text">Contact</span>
+            <FaIcon icon="envelope" class="nav-icon" />
+          </RouterLink>
+          <a
             href="https://www.instagram.com/bodnareszti/"
             target="_blank"
             rel="noopener"
@@ -119,33 +122,56 @@ function setTheme(dark: boolean) {
 
 .nav-link {
   position: relative;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
   font-family: 'JetBrains Mono', ui-monospace, monospace;
   color: var(--ink-muted);
   text-decoration: none;
   font-size: 11px;
   text-transform: uppercase;
   letter-spacing: 0.2em;
-  padding: 10px 12px;
-  transition: color 0.2s ease;
+  width: 34px;
+  height: 34px;
+  padding: 0;
+  transition: color 0.2s ease, transform 0.2s ease;
 
-  &::after {
-    content: '';
-    position: absolute;
-    left: 12px;
-    right: 12px;
-    bottom: 6px;
-    height: 1px;
-    background: var(--ink);
-    transform: scaleX(0);
-    transform-origin: left;
-    transition: transform 0.3s cubic-bezier(0.7, 0, 0.2, 1);
+  .nav-text { display: none; }
+  .nav-icon { width: 15px; height: 15px; }
+
+  @include md {
+    width: auto;
+    height: auto;
+    padding: 10px 12px;
+
+    .nav-text { display: inline; }
+    .nav-icon { display: none; }
+
+    &::after {
+      content: '';
+      position: absolute;
+      left: 12px;
+      right: 12px;
+      bottom: 6px;
+      height: 1px;
+      background: var(--ink);
+      transform: scaleX(0);
+      transform-origin: left;
+      transition: transform 0.3s cubic-bezier(0.7, 0, 0.2, 1);
+    }
   }
 
-  &:hover,
-  &.router-link-exact-active {
+  &:hover {
     color: var(--ink);
-    &::after { transform: scaleX(1); }
+    @media (max-width: 767px) { transform: translateY(-1px); }
   }
+
+  &:hover::after,
+  &.router-link-exact-active::after {
+    transform: scaleX(1);
+  }
+
+  &.router-link-exact-active { color: var(--ink); }
 }
 
 /* ---------- Theme switch (segmented, ux-friendly) ---------- */
