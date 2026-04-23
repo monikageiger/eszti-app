@@ -1,62 +1,80 @@
 @mixin sm { @media (min-width: 600px) { @content; } }
 @mixin md { @media (min-width: 768px) { @content; } }
 @mixin lg { @media (min-width: 1024px) { @content; } }
+@mixin xl { @media (min-width: 1280px) { @content; } }
+
+@mixin container {
+  width: 100%;
+  max-width: 1360px;
+  margin: 0 auto;
+  padding: 0 24px;
+
+  @include md { padding: 0 40px; }
+  @include lg { padding: 0 64px; }
+}
 
 @mixin sticky-header {
   position: sticky;
   top: 0;
   z-index: 100;
-  background: var(--bg);
-  border-bottom: 1px solid var(--border);
-  transition: background 0.25s ease;
+  background: color-mix(in srgb, var(--bg) 82%, transparent);
+  backdrop-filter: blur(12px) saturate(140%);
+  -webkit-backdrop-filter: blur(12px) saturate(140%);
+  border-bottom: 1px solid var(--rule);
+  transition: background 0.4s ease, border-color 0.4s ease;
 }
 
 @mixin header-inner {
-  max-width: 1200px;
-  margin: 0 auto;
-  padding: 0 16px;
-  height: 56px;
+  @include container;
+  height: 64px;
   display: flex;
   align-items: center;
-  gap: 16px;
+  gap: 24px;
+
+  @include md { height: 72px; }
 }
 
-@mixin back-btn {
-  display: flex;
+@mixin ghost-btn {
+  display: inline-flex;
   align-items: center;
-  gap: 6px;
-  background: none;
-  border: none;
-  color: var(--text);
-  font-size: 15px;
+  gap: 10px;
+  background: transparent;
+  border: 1px solid var(--rule-strong);
+  color: var(--ink);
+  font-family: 'JetBrains Mono', ui-monospace, monospace;
+  font-size: 11px;
+  font-weight: 500;
+  text-transform: uppercase;
+  letter-spacing: 0.18em;
   cursor: pointer;
-  padding: 6px 10px;
-  border-radius: 8px;
-  font-family: inherit;
+  padding: 12px 18px;
+  border-radius: 0;
   text-decoration: none;
-  transition: background 0.15s;
+  transition: background 0.2s ease, color 0.2s ease, border-color 0.2s ease;
 
-  &:hover { background: var(--bg-secondary); }
-  svg { width: 18px; height: 18px; }
+  &:hover {
+    background: var(--ink);
+    color: var(--bg);
+    border-color: var(--ink);
+  }
+
+  svg { width: 12px; height: 12px; }
 }
 
 @mixin text-input {
   width: 100%;
-  padding: 10px 12px;
-  border-radius: 8px;
-  border: 1px solid var(--input-border);
-  background: var(--input-bg);
-  color: var(--text);
-  font-size: 15px;
+  padding: 14px 0;
+  border: none;
+  border-bottom: 1px solid var(--input-border);
+  background: transparent;
+  color: var(--ink);
+  font-size: 16px;
   font-family: inherit;
   outline: none;
-  transition: border-color 0.15s, box-shadow 0.15s, background 0.25s ease;
+  border-radius: 0;
+  transition: border-color 0.25s ease;
 
-  &:focus {
-    border-color: var(--accent);
-    box-shadow: 0 0 0 3px color-mix(in srgb, var(--accent) 15%, transparent);
-  }
-
-  &.input-error { border-color: #ef4444; }
-  &::placeholder { color: var(--text-muted); }
+  &:focus { border-bottom-color: var(--ink); }
+  &.input-error { border-bottom-color: var(--accent); }
+  &::placeholder { color: var(--ink-faint); }
 }

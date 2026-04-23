@@ -5,40 +5,140 @@
 }
 
 :root {
-  --bg: #ffffff;
-  --bg-secondary: #f7f7f8;
-  --text: #111111;
-  --text-muted: #6b7280;
-  --border: #e5e7eb;
-  --accent: #6366f1;
-  --accent-hover: #4f46e5;
-  --input-bg: #ffffff;
-  --input-border: #d1d5db;
-  --toggle-bg: #e5e7eb;
-  --toggle-thumb: #ffffff;
+  --bg: #f1ece3;
+  --bg-secondary: #e8e1d4;
+  --paper: #faf6ee;
+  --ink: #181613;
+  --ink-soft: #2a2520;
+  --ink-muted: #6f665a;
+  --ink-faint: #a79d8c;
+  --rule: #d8cfbe;
+  --rule-strong: #b8ac96;
+  --accent: #9a3b2a;
+  --accent-soft: #c15b47;
+  --input-bg: #faf6ee;
+  --input-border: #c9bfae;
+  --selection-bg: #181613;
+  --selection-fg: #f1ece3;
+  --grain-opacity: 0.08;
 }
 
 [data-theme='dark'] {
-  --bg: #0d0d0d;
-  --bg-secondary: #161618;
-  --text: #f0f0f0;
-  --text-muted: #9ca3af;
-  --border: #2a2a2e;
-  --accent: #818cf8;
-  --accent-hover: #6366f1;
-  --input-bg: #18181b;
-  --input-border: #3f3f46;
-  --toggle-bg: #6366f1;
-  --toggle-thumb: #ffffff;
+  --bg: #0f0d0b;
+  --bg-secondary: #15110d;
+  --paper: #171310;
+  --ink: #ede5d6;
+  --ink-soft: #d6ceba;
+  --ink-muted: #8a8272;
+  --ink-faint: #5a5248;
+  --rule: #2b2520;
+  --rule-strong: #3d362d;
+  --accent: #e68468;
+  --accent-soft: #f0a68e;
+  --input-bg: #1a1612;
+  --input-border: #3a342b;
+  --selection-bg: #ede5d6;
+  --selection-fg: #0f0d0b;
+  --grain-opacity: 0.12;
 }
 
 html {
   scroll-behavior: smooth;
+  background: var(--bg);
 }
 
 body {
-  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+  font-family: 'Instrument Sans', 'Helvetica Neue', system-ui, sans-serif;
   background: var(--bg);
-  color: var(--text);
-  line-height: 1.6;
+  color: var(--ink);
+  line-height: 1.55;
+  font-size: 15px;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  text-rendering: optimizeLegibility;
+  font-feature-settings: 'ss01', 'cv11';
+  transition: background 0.4s ease, color 0.4s ease;
+  overflow-x: hidden;
+}
+
+// Film grain overlay — the signature texture of the whole app
+body::before {
+  content: '';
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  z-index: 999;
+  opacity: var(--grain-opacity);
+  background-image: url("data:image/svg+xml;utf8,<svg viewBox='0 0 400 400' xmlns='http://www.w3.org/2000/svg'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='3' stitchTiles='stitch'/><feColorMatrix values='0 0 0 0 0  0 0 0 0 0  0 0 0 0 0  0 0 0 0.6 0'/></filter><rect width='100%25' height='100%25' filter='url(%23n)'/></svg>");
+  background-size: 180px 180px;
+  mix-blend-mode: multiply;
+}
+
+[data-theme='dark'] body::before {
+  mix-blend-mode: screen;
+}
+
+::selection {
+  background: var(--selection-bg);
+  color: var(--selection-fg);
+}
+
+::-moz-selection {
+  background: var(--selection-bg);
+  color: var(--selection-fg);
+}
+
+::-webkit-scrollbar { width: 10px; height: 10px; }
+::-webkit-scrollbar-track { background: transparent; }
+::-webkit-scrollbar-thumb {
+  background: var(--rule-strong);
+  border-radius: 20px;
+  border: 2px solid var(--bg);
+}
+
+.display {
+  font-family: 'Fraunces', 'Times New Roman', serif;
+  font-weight: 400;
+  font-variation-settings: 'SOFT' 30, 'opsz' 144;
+  letter-spacing: -0.02em;
+  line-height: 0.95;
+  color: var(--ink);
+}
+
+.mono {
+  font-family: 'JetBrains Mono', 'SF Mono', ui-monospace, monospace;
+  font-feature-settings: 'ss01', 'ss02';
+}
+
+.eyebrow {
+  font-family: 'JetBrains Mono', ui-monospace, monospace;
+  font-size: 11px;
+  text-transform: uppercase;
+  letter-spacing: 0.22em;
+  color: var(--ink-muted);
+  font-weight: 400;
+}
+
+a { color: inherit; }
+
+button { font-family: inherit; }
+
+img {
+  -webkit-user-drag: none;
+  user-select: none;
+}
+
+@keyframes rise {
+  from { opacity: 0; transform: translateY(14px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes fade {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+@keyframes marquee {
+  from { transform: translateX(0); }
+  to { transform: translateX(-50%); }
 }

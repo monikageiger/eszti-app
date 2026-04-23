@@ -6,7 +6,7 @@ import { images } from '../images'
 const route = useRoute()
 const router = useRouter()
 
-const photo = computed(() => images.find(img => img.id === Number(route.params.id)))
+const work = computed(() => images.find(img => img.id === Number(route.params.id)))
 
 function onKeydown(e: KeyboardEvent) {
   if (e.key === 'Escape') router.push('/')
@@ -18,19 +18,19 @@ onUnmounted(() => document.removeEventListener('keydown', onKeydown))
 
 <template>
   <main class="main">
-    <div v-if="photo" class="photo-wrap">
+    <div v-if="work" class="photo-wrap">
       <button class="back-btn" @click="router.push('/')">
-        <FaIcon icon="chevron-left" />Back
+        <FaIcon icon="chevron-left" /> Back
       </button>
       <div class="img-wrap">
-        <img :src="photo.src" :alt="photo.alt" draggable="false" />
+        <img :src="work.src" :alt="work.alt" draggable="false" />
         <div class="img-shield" @contextmenu.prevent />
       </div>
     </div>
     <div v-else class="not-found">
-      <p>Photo not found.</p>
+      <p>Not found.</p>
       <button class="back-btn" @click="router.push('/')">
-        <FaIcon icon="chevron-left" />Back to gallery
+        <FaIcon icon="chevron-left" /> Back
       </button>
     </div>
   </main>
@@ -44,15 +44,16 @@ onUnmounted(() => document.removeEventListener('keydown', onKeydown))
   display: flex;
   align-items: center;
   justify-content: center;
-  padding: 24px 16px;
+  padding: 24px 16px 48px;
 }
 
 .photo-wrap {
-  width: 80%;
-  max-width: 900px;
+  width: 100%;
+  max-width: 1000px;
   display: flex;
   flex-direction: column;
-  gap: 12px;
+  gap: 16px;
+  animation: fade 0.5s ease both;
 }
 
 .img-wrap {
@@ -61,9 +62,8 @@ onUnmounted(() => document.removeEventListener('keydown', onKeydown))
   img {
     display: block;
     width: 100%;
-    max-height: calc(100svh - 56px - 50px - 48px);
+    max-height: calc(100svh - 200px);
     object-fit: contain;
-    border-radius: 8px;
   }
 }
 
@@ -77,11 +77,17 @@ onUnmounted(() => document.removeEventListener('keydown', onKeydown))
   flex-direction: column;
   align-items: center;
   gap: 16px;
-  color: var(--text-muted);
+  color: var(--ink-muted);
+
+  p {
+    font-family: 'Fraunces', serif;
+    font-size: 20px;
+    font-style: italic;
+  }
 }
 
 .back-btn {
-  @include back-btn;
+  @include ghost-btn;
   align-self: flex-start;
 }
 </style>
